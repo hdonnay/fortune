@@ -1,3 +1,4 @@
+// Package fortune sets up a bufio.Scanner for reading a fortune file.
 package fortune
 
 import (
