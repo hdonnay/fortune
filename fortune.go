@@ -8,8 +8,10 @@ import (
 	"math/big"
 )
 
+// Delim is the byte sequent that delimits fortunes
 var Delim = []byte("%\n")
 
+// SplitFortune is a bufio.SplitFunc to use on an io.Reader from a fortune file
 func SplitFortune(data []byte, atEOF bool) (advance int, token []byte, err error) {
 	idx := bytes.Index(data, []byte("%\n"))
 	switch {
@@ -25,12 +27,14 @@ func SplitFortune(data []byte, atEOF bool) (advance int, token []byte, err error
 	return
 }
 
+// NewScanner returns a Scanner with Split() set already
 func NewScanner(r io.Reader) *bufio.Scanner {
 	ret := bufio.NewScanner(r)
 	ret.Split(SplitFortune)
 	return ret
 }
 
+// Count returns number of fortunes - 1
 func Count(r io.Reader) int64 {
 	var b bytes.Buffer
 	io.Copy(&b, r)
