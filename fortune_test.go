@@ -39,8 +39,8 @@ func TestRandomUse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	r2, _ := os.Open("test/test.fortune")
-	rn := Count(r2)
+	rn := Count(r)
+	r.Seek(0, 0)
 	s := NewScanner(r)
 	for i := 0; s.Scan(); i++ {
 		if int64(i) == rn {
