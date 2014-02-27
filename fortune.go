@@ -1,4 +1,21 @@
-// Package fortune sets up a bufio.Scanner for reading a fortune file.
+/*
+Package fortune sets up a bufio.Scanner for reading a fortune file.
+
+	r, err := os.Open("test/test.fortune")
+	if err != nil {
+		t.Fatal(err)
+	}
+	r2, _ := os.Open("test/test.fortune")
+	rn := Count(r2)
+	s := NewScanner(r)
+	for i := 0; s.Scan(); i++ {
+		if int64(i) == rn {
+			t.Log(s.Text())
+			break
+		}
+	}
+
+*/
 package fortune
 
 import (
