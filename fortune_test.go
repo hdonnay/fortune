@@ -6,31 +6,40 @@ import (
 	"testing"
 )
 
-var test = `a
+var (
+	test = `a
 %
 b
 %
-asdfasdf`
+asdfasdf
+`
+	testCheck = []string{"a\n", "b\n", "asdfasdf\n"}
+)
 
 func TestFortune(t *testing.T) {
 	r := strings.NewReader(test)
 	s := NewScanner(r)
-	for s.Scan() {
-		t.Log(s.Text())
+	for i := 0; s.Scan(); i++ {
+		if o := s.Text(); o != testCheck[i] {
+			t.Fatalf("%s != %s\n", o, testCheck[i])
+		}
 	}
 }
 
 func TestZeroLen(t *testing.T) {
 	s := NewScanner(strings.NewReader(""))
-	for s.Scan() {
-		t.Log(s.Text())
+	s.Scan()
+	if o := s.Text(); o != "" {
+		t.Fatalf("'' != '%s'\n", o)
 	}
 }
 
 func TestNoSep(t *testing.T) {
-	s := NewScanner(strings.NewReader("blahblahblah"))
-	for s.Scan() {
-		t.Log(s.Text())
+	text := "blahblahblah"
+	s := NewScanner(strings.NewReader(text))
+	s.Scan()
+	if o := s.Text(); o != text {
+		t.Fatalf("%s != %s\n", o, text)
 	}
 }
 
@@ -45,7 +54,8 @@ func TestRandomUse(t *testing.T) {
 	for i := 0; s.Scan(); i++ {
 		if int64(i) == rn {
 			t.Log(s.Text())
-			break
+			return
 		}
 	}
+	t.Fatal("exhausted loop")
 }
