@@ -1,6 +1,8 @@
 package fortune
 
 import (
+	"crypto/rand"
+	"math/big"
 	"os"
 	"strings"
 	"testing"
@@ -48,7 +50,8 @@ func TestRandomUse(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	rn := Count(r)
+	x, _ := rand.Int(rand.Reader, big.NewInt(Count(r)))
+	rn := x.Int64()
 	r.Seek(0, 0)
 	s := NewScanner(r)
 	for i := 0; s.Scan(); i++ {

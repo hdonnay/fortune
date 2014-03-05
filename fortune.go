@@ -5,7 +5,8 @@ Package fortune sets up a bufio.Scanner for reading a fortune file.
 	if err != nil {
 		log.Fatal(err)
 	}
-	rn := Count(r)
+	x, _ := rand.Int(rand.Reader, big.NewInt(Count(r)))
+	rn := x.Int64()
 	r.Seek(0, 0)
 	s := NewScanner(r)
 	for i := 0; s.Scan(); i++ {
@@ -21,9 +22,7 @@ package fortune
 import (
 	"bufio"
 	"bytes"
-	"crypto/rand"
 	"io"
-	"math/big"
 )
 
 // Delim is the byte sequent that delimits fortunes
@@ -56,7 +55,5 @@ func NewScanner(r io.Reader) *bufio.Scanner {
 func Count(r io.Reader) int64 {
 	var b bytes.Buffer
 	io.Copy(&b, r)
-	max := bytes.Count(b.Bytes(), Delim)
-	ret, _ := rand.Int(rand.Reader, big.NewInt(int64(max)))
-	return ret.Int64()
+	return int64(bytes.Count(b.Bytes(), Delim))
 }
