@@ -30,7 +30,7 @@ var Delim = []byte("%\n")
 
 // SplitFortune is a bufio.SplitFunc to use on an io.Reader from a fortune file
 func SplitFortune(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	idx := bytes.Index(data, []byte("%\n"))
+	idx := bytes.Index(data, Delim)
 	switch {
 	case idx == -1 && !atEOF:
 		break
